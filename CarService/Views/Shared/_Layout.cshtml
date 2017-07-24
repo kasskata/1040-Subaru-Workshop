@@ -22,6 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav nav navbar-right">
+                    <li>@Html.ActionLink("Начало", "Index", "Home")</li>
                     <li>@Html.ActionLink("За нас", "About", "Home")</li>
                     <li>@Html.ActionLink("Запази час", "Calendar", "Home")</li>
                     <li><a href="#">Форум</a></li>
@@ -47,6 +48,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
     <script>
         $(".navbar-fixed-top").autoHidingNavbar({

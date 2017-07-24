@@ -10,6 +10,12 @@
     font-size: 40px;
 }
 
+.col-centered {
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .btn-circle {
     width: 30px;
     height: 30px;
@@ -45,6 +51,11 @@ header h2, h1 {
     color: whitesmoke;
 }
 
+.some-space {
+    padding: 40px 20px;
+    margin: 10px 0;
+}
+
 .dl-horizontal dt {
     white-space: normal;
 }
@@ -73,7 +84,7 @@ header h2, h1 {
     -o-background-size: cover;
 }
 
-.text-center h1 {
+.text-center-vertical h1 {
     color: white;
     margin: 0;
     padding: 0;
@@ -81,10 +92,14 @@ header h2, h1 {
     font-weight: 700;
 }
 
-.text-center {
+.text-center-vertical {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
+}
+
+.text-center-horizontal {
+    text-align: center;
 }
 
 blockquote {
