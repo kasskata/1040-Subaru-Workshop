@@ -1,5 +1,15 @@
-﻿body {
+﻿@font-face {
+    font-family: 'NotoSans-Regular';
+    src: url('../fonts/Noto_Sans/NotoSans-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: "NotoSans-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding-top: 60px;
+}
+
+html, body {
+    height: 100%
 }
 
 .font-L {
@@ -123,10 +133,15 @@ blockquote {
     }
 
 .footer {
-    padding: 7px 0 30px 10px;
+    padding: 7px 0 0 0;
     background-color: #3e3f3a;
     color: #98976a;
 }
+
+    .footer > .row {
+        margin: 5px 0 0 5px;
+        padding-bottom: 5px;
+    }
 
 .map {
     width: 100%;

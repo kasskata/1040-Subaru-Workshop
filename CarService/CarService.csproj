@@ -157,6 +157,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\Noto_Sans\LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1040SubaruWorkShopBackground.jpg" />
@@ -184,6 +185,10 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\Noto_Sans\NotoSans-Bold.ttf" />
+    <Content Include="fonts\Noto_Sans\NotoSans-BoldItalic.ttf" />
+    <Content Include="fonts\Noto_Sans\NotoSans-Italic.ttf" />
+    <Content Include="fonts\Noto_Sans\NotoSans-Regular.ttf" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
