@@ -11,32 +11,39 @@
         <div class="row some-space">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-8">
-                        <p>
-                            <i class="fa fa-calendar-o" aria-hidden="true"></i> <span class="text-info">@message.CreatedTime.ToString("dd.MM.yyyy")</span>
-                            | <i class="fa fa-comment-o" aria-hidden="true"></i> <span class="text-primary">@message.CommentsCount</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
                     @if (message.Images.Count > 0)
                     {
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="grid bg-info">
                                 @for (int i = 0; i < message.Images.Count; i++)
                                 {
                                     <div class="grid-item">
-                                        <img src="@message.Images[i]" />
+                                        <a href="@message.Images[i]"><img class="img-rounded" src="@message.Images[i]" /></a>
                                     </div>
                                 }
                             </div>
                         </div>
                     }
-                    <div class="col-md-7">
-                        @message.Message
-                        <p>
-                            <a class="btn btn-info" href="#">Read more</a>
-                        </p>
+
+                    <div class="col-md-6 @(message.Images.Count > 0 ? "": "col-md-offset-6")">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <i class="fa fa-calendar-o" aria-hidden="true"></i> <span class="text-info">@message.CreatedTime.ToString("dd.MM.yyyy")</span>
+                                    | <i class="fa fa-comment-o" aria-hidden="true"></i> <span class="text-primary">@message.CommentsCount</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    @message.Message
+                                </p>
+                                <p>
+                                    <a class="btn btn-info" href=@("https://facebook.com/" + message.Id)>Read more</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,9 +60,7 @@
         var $grid = $('.grid').imagesLoaded( function() {
             $grid.masonry({
                 itemSelector: '.grid-item',
-                percentPosition: true,
-                columnWidth: '.grid'
-                columnHeight: 100
+                percentPosition: true
             });
         });
     });

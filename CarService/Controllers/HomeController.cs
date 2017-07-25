@@ -17,63 +17,8 @@ namespace CarService.Controllers
 
         public ActionResult FeedFacebook()
         {
-            FacebookClient client = new FacebookClient("EAACEdEose0cBADl3CgHJSduGmOdn7ZB7CHMrIt8qsz4vDdOCpAzjKqXPN6TY00BPOyfQo1PGBm80iOUdD0IlSDJRniaAaq3ZC6eZC4xKG8mFuGJ8LAtndcpqcSZAir8lZCNStbqt2Cg0uHjzywFQ2TruuhINRaqq1lGFwnuqugd9W2x3BFTYHShZBcHCbxuZCoZD");
-            dynamic data = client.Get("1040SubaruWorkshop?fields=posts");
-
             FeedViewModel model = new FeedViewModel();
-            JsonObject jsonObject = (data as JsonObject)["posts"] as JsonObject;
-            JsonArray jsonArray = jsonObject["data"] as JsonArray;
-
-            for (int i = 0; i < jsonArray.Count; i++)
-            {
-                var message = jsonArray[i] as JsonObject;
-
-                if (message.ContainsKey("message"))
-                {
-                    var post = new PostFbViewModel
-                    {
-                        Id = message["id"].ToString(),
-                        Message = message["message"].ToString(),
-                        CreatedTime = DateTime.Parse(message["created_time"].ToString()),
-                        Images = new List<string>()
-                    };
-
-                    data = client.Get(post.Id + "/attachments");
-                    if ((data as JsonObject).ContainsKey("data"))
-                    {
-                        JsonArray jsonAttachmentsArray = data["data"] as JsonArray;
-                        if (jsonAttachmentsArray != null && jsonAttachmentsArray.Count > 0)
-                        {
-                            for (int j = 0; j < jsonAttachmentsArray.Count; j++)
-                            {
-                                var jsonObj = jsonAttachmentsArray[j] as JsonObject;
-                                if (jsonObj.ContainsKey("subattachments"))
-                                {
-                                    jsonObj = jsonObj["subattachments"] as JsonObject;
-                                    jsonAttachmentsArray = jsonObj["data"] as JsonArray;
-
-                                    for (int k = 0; k < jsonAttachmentsArray.Count; k++)
-                                    {
-                                        jsonObj = jsonAttachmentsArray[k] as JsonObject;
-                                        jsonObj = jsonObj["media"] as JsonObject;
-                                        jsonObj = jsonObj["image"] as JsonObject;
-                                        post.Images.Add(jsonObj["src"].ToString());
-                                    }
-
-                                }
-                                else if (jsonObj.ContainsKey("media"))
-                                {
-                                    jsonObj = jsonObj["media"] as JsonObject;
-                                    jsonObj = jsonObj["image"] as JsonObject;
-                                    post.Images.Add(jsonObj["src"].ToString());
-                                }
-                            }
-                        }
-                    }
-
-                    model.Posts.Add(post);
-                }
-            }
+            ReturnFeedModel(ref model);
 
             return this.View(model);
         }
@@ -88,6 +33,84 @@ namespace CarService.Controllers
         public ActionResult Calendar()
         {
             throw new NotImplementedException();
+        }
+
+        private void ReturnFeedModel(ref FeedViewModel model)
+        {
+            FacebookClient client =
+                new FacebookClient("EAABrDhzpuaMBAALZA9rR5agnQoktwov7B1QmN4ehI9IKSAYDI1xWQjmXyk3gMbCBGcH7VX63HoJBEycZBpIyMeHmmIIA63lNSRjdN27sSuYaeTTuIADD27vEWqZC2td5IGWD9g4frBwhCiBBYSdWH6xHdZAj7NJ32x1n2JaHBKHJFTW54XnOapYQIl8WbtvVdINtjGyk1gZDZD");
+            dynamic data =
+                client.Get(
+                    "1040subaruworkshop/?fields=posts{id,message,created_time,comments{comment_count},picture.width(400),attachments{media{image{src}},subattachments{media{image{src}}}}}");
+
+            //Posts
+            JsonObject jsonObject = (data as JsonObject)["posts"] as JsonObject;
+            JsonArray jsonArray = jsonObject["data"] as JsonArray;
+            PostFbViewModel parsedPost;
+
+            for (int i = 0; i < jsonArray.Count; i++)
+            {
+                JsonObject message = jsonArray[i] as JsonObject;
+
+                if (!message.ContainsKey("message"))
+                {
+                    continue;
+                }
+
+                parsedPost = new PostFbViewModel
+                {
+                    Id = message["id"].ToString(),
+                    Message = message["message"].ToString(),
+                    CreatedTime = DateTime.Parse(message["created_time"].ToString()),
+                    Images = new List<string>()
+                };
+
+                if (message.ContainsKey("comments"))
+                {
+                    var jsonCommentsArr = (message["comments"] as JsonObject)["data"] as JsonArray;
+                    parsedPost.CommentsCount += jsonCommentsArr.Count;
+                    for (int j = 0; j < jsonCommentsArr.Count; j++)
+                    {
+                        parsedPost.CommentsCount +=
+                            int.Parse((jsonCommentsArr[j] as JsonObject)["comment_count"].ToString());
+                    }
+                }
+
+                if (message.ContainsKey("attachments"))
+                {
+                    JsonArray jsonAttachmentsArray = (message["attachments"] as JsonObject)["data"] as JsonArray;
+                    if (jsonAttachmentsArray != null && jsonAttachmentsArray.Count > 0)
+                    {
+                        for (int j = 0; j < jsonAttachmentsArray.Count; j++)
+                        {
+                            var jsonObj = jsonAttachmentsArray[j] as JsonObject;
+                            if (jsonObj.ContainsKey("subattachments"))
+                            {
+                                jsonObj = jsonObj["subattachments"] as JsonObject;
+                                jsonAttachmentsArray = jsonObj["data"] as JsonArray;
+
+                                for (int k = 0; k < jsonAttachmentsArray.Count; k++)
+                                {
+                                    jsonObj = jsonAttachmentsArray[k] as JsonObject;
+                                    jsonObj = jsonObj["media"] as JsonObject;
+                                    jsonObj = jsonObj["image"] as JsonObject;
+                                    parsedPost.Images.Add(jsonObj["src"].ToString());
+                                }
+
+                                jsonAttachmentsArray.Clear();
+                            }
+                            else if (jsonObj.ContainsKey("media"))
+                            {
+                                jsonObj = jsonObj["media"] as JsonObject;
+                                jsonObj = jsonObj["image"] as JsonObject;
+                                parsedPost.Images.Add(jsonObj["src"].ToString());
+                            }
+                        }
+                    }
+                }
+
+                model.Posts.Add(parsedPost);
+            }
         }
     }
 }

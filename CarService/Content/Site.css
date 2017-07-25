@@ -171,17 +171,16 @@ blockquote {
 }
 
 /* ---- .grid-item ---- */
-
-.grid-sizer,
-.grid-item {
-    width: 20%;
+.grid {
+    padding: 5px;
 }
 
 .grid-item {
     float: right;
+    width: 23%;
 }
 
     .grid-item img {
         display: block;
-        width: 90%;
+        width: 100%;
     }
