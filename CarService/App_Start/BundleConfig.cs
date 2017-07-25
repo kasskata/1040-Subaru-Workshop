@@ -26,6 +26,10 @@ namespace CarService
             bundles.Add(new ScriptBundle("~/bundles/aditional").Include(
                 "~/Scripts/jquery.countdown.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/grid-images").Include(
+                "~/Scripts/imagesloaded.min.js",
+                "~/Scripts/masonry.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",
