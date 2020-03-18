@@ -21,8 +21,6 @@ function manageOpenCloseSection() {
         countdownDate = openHour;
     }
 
-    console.log(countdownDate);
-
     if (isOpened) {
         $("#open-count").show();
         $("#close-count").hide();
